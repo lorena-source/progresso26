@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Progresso Semestral 2026</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Roadmap 2026</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
+
 :root{
   --blue:#1f7ae0;
   --petroleum:#001E27;
@@ -23,57 +25,34 @@
 
 body{
   margin:0;
-  background:#f7f7f7;
+  background:transparent;
   font-family:'Poppins', sans-serif;
   color:var(--text);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  min-height:100vh;
-  padding:24px;
+  padding:8px;
 }
 
 .widget{
   width:100%;
-  max-width:980px;
+  max-width:900px;
+  margin:auto;
   background:var(--card);
-  border:1px solid rgba(0,0,0,0.04);
-  border-radius:28px;
-  padding:42px 52px;
-  box-shadow:0 18px 45px rgba(15,23,42,0.08);
+  border-radius:18px;
+  padding:20px 24px;
+  border:1px solid #f1f5f9;
+  box-shadow:0 4px 16px rgba(0,0,0,0.05);
 }
 
 .semester{
   display:grid;
-  grid-template-columns:92px 1fr 100px;
-  gap:28px;
+  grid-template-columns:1fr 70px;
+  gap:16px;
   align-items:center;
-}
-
-.iconBox{
-  width:82px;
-  height:82px;
-  border-radius:24px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:34px;
-}
-
-.iconH1{
-  background:rgba(31,122,224,0.12);
-  color:var(--blue);
-}
-
-.iconH2{
-  background:var(--petroleum);
-  color:#ffffff;
 }
 
 .title{
-  font-size:30px;
+  font-size:18px;
   font-weight:700;
-  letter-spacing:.2px;
+  margin-bottom:4px;
 }
 
 .h1Text{
@@ -85,15 +64,15 @@ body{
 }
 
 .period{
-  font-size:18px;
+  font-size:12px;
   color:var(--muted);
-  margin-bottom:22px;
+  margin-bottom:10px;
 }
 
 .progressTrack{
   width:100%;
-  height:18px;
-  background:#eaf0f4;
+  height:10px;
+  background:#edf2f7;
   border-radius:999px;
   overflow:hidden;
 }
@@ -115,14 +94,13 @@ body{
 .meta{
   display:flex;
   justify-content:space-between;
-  gap:16px;
-  margin-top:20px;
-  color:#475569;
-  font-size:16px;
+  margin-top:8px;
+  font-size:11px;
+  color:var(--muted);
 }
 
 .percent{
-  font-size:38px;
+  font-size:24px;
   font-weight:700;
   text-align:right;
 }
@@ -130,40 +108,21 @@ body{
 .divider{
   height:1px;
   background:var(--line);
-  margin:38px 0;
+  margin:14px 0;
 }
 
-@media (max-width:720px){
-  .widget{
-    padding:28px 24px;
-    border-radius:22px;
-  }
+@media(max-width:700px){
 
   .semester{
     grid-template-columns:1fr;
-    gap:16px;
-  }
-
-  .iconBox{
-    width:68px;
-    height:68px;
-    font-size:28px;
-  }
-
-  .title{
-    font-size:24px;
   }
 
   .percent{
-    font-size:32px;
     text-align:left;
   }
 
-  .meta{
-    flex-direction:column;
-    gap:6px;
-  }
 }
+
 </style>
 </head>
 
@@ -172,11 +131,14 @@ body{
 <div class="widget">
 
   <section class="semester">
-    <div class="iconBox iconH1">📅</div>
 
     <div>
+
       <div class="title h1Text">H1 2026</div>
-      <div class="period">01 Jan - 30 Jun</div>
+
+      <div class="period">
+        01 Jan • 30 Jun
+      </div>
 
       <div class="progressTrack">
         <div class="progressBar h1Bar" id="h1Bar"></div>
@@ -186,19 +148,24 @@ body{
         <span id="h1Remaining"></span>
         <span id="h1Days"></span>
       </div>
+
     </div>
 
     <div class="percent h1Text" id="h1Percent"></div>
+
   </section>
 
   <div class="divider"></div>
 
   <section class="semester">
-    <div class="iconBox iconH2">📅</div>
 
     <div>
+
       <div class="title h2Text">H2 2026</div>
-      <div class="period">01 Jul - 31 Dez</div>
+
+      <div class="period">
+        01 Jul • 31 Dez
+      </div>
 
       <div class="progressTrack">
         <div class="progressBar h2Bar" id="h2Bar"></div>
@@ -208,63 +175,122 @@ body{
         <span id="h2Remaining"></span>
         <span id="h2Days"></span>
       </div>
+
     </div>
 
     <div class="percent h2Text" id="h2Percent"></div>
+
   </section>
 
 </div>
 
 <script>
+
 function startOfDay(date){
-  return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  return new Date(
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate()
+  );
 }
 
-function calculateProgress(startDate, endDate){
+function calculateProgress(startDate,endDate){
+
   const today = startOfDay(new Date());
+
   const start = startOfDay(startDate);
+
   const end = startOfDay(endDate);
 
   const msPerDay = 1000 * 60 * 60 * 24;
-  const totalDays = Math.round((end - start) / msPerDay) + 1;
+
+  const totalDays =
+    Math.round((end - start) / msPerDay) + 1;
 
   let elapsedDays;
 
   if(today < start){
+
     elapsedDays = 0;
-  } else if(today > end){
+
+  }else if(today > end){
+
     elapsedDays = totalDays;
-  } else {
-    elapsedDays = Math.round((today - start) / msPerDay) + 1;
+
+  }else{
+
+    elapsedDays =
+      Math.round((today - start) / msPerDay) + 1;
+
   }
 
-  const remainingDays = Math.max(totalDays - elapsedDays, 0);
-  const percent = Math.round((elapsedDays / totalDays) * 100);
+  const remainingDays =
+    Math.max(totalDays - elapsedDays,0);
+
+  const percent =
+    Math.round((elapsedDays / totalDays) * 100);
 
   return {
+
     totalDays,
     elapsedDays,
     remainingDays,
     percent
+
   };
+
 }
 
-function renderSemester(prefix, startDate, endDate){
-  const data = calculateProgress(startDate, endDate);
+function renderSemester(
+  prefix,
+  startDate,
+  endDate
+){
 
-  document.getElementById(prefix + "Bar").style.width = data.percent + "%";
-  document.getElementById(prefix + "Percent").textContent = data.percent + "%";
-  document.getElementById(prefix + "Remaining").textContent = data.remainingDays + " dias restantes";
-  document.getElementById(prefix + "Days").textContent = data.elapsedDays + " de " + data.totalDays + " dias";
+  const data =
+    calculateProgress(
+      startDate,
+      endDate
+    );
+
+  document.getElementById(
+    prefix + "Bar"
+  ).style.width =
+    data.percent + "%";
+
+  document.getElementById(
+    prefix + "Percent"
+  ).textContent =
+    data.percent + "%";
+
+  document.getElementById(
+    prefix + "Remaining"
+  ).textContent =
+    data.remainingDays +
+    " dias restantes";
+
+  document.getElementById(
+    prefix + "Days"
+  ).textContent =
+    data.elapsedDays +
+    " de " +
+    data.totalDays +
+    " dias";
+
 }
 
-renderSemester("h1", new Date(2026, 0, 1), new Date(2026, 5, 30));
-renderSemester("h2", new Date(2026, 6, 1), new Date(2026, 11, 31));
+renderSemester(
+  "h1",
+  new Date(2026,0,1),
+  new Date(2026,5,30)
+);
 
-setInterval(function(){
-  renderSemester("h1", new Date(2026, 0, 1), new Date(2026, 5, 30));
-  renderSemester("h2", new Date(2026, 6, 1), new Date(2026, 11, 31));
-}, 60 * 60 * 1000);
+renderSemester(
+  "h2",
+  new Date(2026,6,1),
+  new Date(2026,11,31)
+);
+
 </script>
 
 </body>
